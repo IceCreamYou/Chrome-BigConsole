@@ -1,0 +1,98 @@
+<html>
+<head>
+  <title>BigConsole</title>
+  <style>
+* {
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  -o-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+body {
+  height: 100%;
+  margin: 0;
+}
+#log {
+  background-color: #F6F6F6;
+  float: left;
+  height: 100%;
+  width: 60%;
+}
+#log-inner {
+  font-family: "Lucida Console", monospace;
+  font-size: 14px;
+  height: 100%;
+  overflow-y: scroll;
+  padding: 10px;
+  width: 100%;
+}
+#log-inner p {
+  border-bottom: 1px solid #DDDDDD;
+  margin: 0;
+  overflow: hidden;
+  padding: 5px 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+#log-inner p:last-child {
+    border-bottom-width: 0;
+}
+#log-inner p.removeWrap {
+  overflow: auto;
+  text-overflow: clip;
+  white-space: normal;
+}
+#log-inner p.input {
+  color: #1C90C5;
+}
+#console-wrapper {
+  float: right;
+  height: 100%;
+  position: relative;
+  width: 40%;
+}
+#textarea-wrapper {
+  bottom: 28px;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+textarea {
+  height: 100%;
+  margin: 0;
+  width: 100%;
+}
+#buttons {
+  background-color: #F6F6F6;
+  bottom: 0;
+  box-shadow: 0 0 2px 0 #CCCCCC inset;
+  height: 28px;
+  left: 0;
+  padding: 2px 5px;
+  position: absolute;
+  right: 0;
+}
+  </style>
+  <script src="panel.js"></script>
+</head>
+<body>
+<div id="log">
+  <div id="log-inner">
+  </div>
+</div>
+<div id="console-wrapper">
+  <div id="textarea-wrapper">
+    <!-- TODO: Use AceEditor to get syntax highlighting -->
+    <textarea id="console"></textarea>
+</div>
+  <div id="buttons">
+    <button id="run">Run</button>
+    <button id="clear">Clear</button>
+    <!-- TODO: Add history -->
+  </div>
+</div>
+<div style="clear: both;"></div>
+</body>
+</html>
