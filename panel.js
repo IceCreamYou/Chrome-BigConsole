@@ -115,7 +115,6 @@ function resultToOutput(s, depth) {
   return span;
 }
 function prepareForEval(s) {
-  s = 'try { ' + s + ' } catch(BIGCONSOLE_EXCEPTION) { BIGCONSOLE_EXCEPTION; }';
   return s;
 }
 window.onload = function() {
@@ -131,7 +130,7 @@ window.onload = function() {
         y(z, false);
       }
       catch(ex) {
-        y(ex, true);
+        y(undefined, ex);
       }
     };
   }
@@ -143,7 +142,8 @@ window.onload = function() {
       // into the DOM that can finally eval `s` in the right context.
       s = prepareForEval(s);
       myEval(s, function(result, isError) {
-        if (result instanceof Error) {
+        if (isError) {
+          result = isError;
           isError = true;
         }
         addToConsole(result, false, isError ? SEVERITY.ERROR : SEVERITY.LOG);
