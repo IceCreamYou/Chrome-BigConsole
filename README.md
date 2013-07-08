@@ -30,6 +30,8 @@ extension receives it, which means only acyclic objects can be inspected and
 object types are not preserved. I have an idea for how to get around this but
 it is pretty complicated and maybe not worth the effort.
 
+**Note:** You can click on truncated console output to expand and collapse it.
+
 ## Status
 
 BigConsole currently does most of what it was designed to do. That is, it
