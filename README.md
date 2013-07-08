@@ -16,7 +16,7 @@ be a multiline REPL. Specifically it has a vertical split layout, no saving
 blocks of code in files, there's a "Clear" button, and it has some nice editor
 things that come for free with Ace Editor.
 
-But mainly this is me being obsessive about controlling my environment.
+But mainly this is me wanting to control my environment in a generic way.
 
 Using [FirebugLite](https://getfirebug.com/firebuglite) is a possible
 alternative, but it has to append itself to the DOM which results in a number
