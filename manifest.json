@@ -12,27 +12,6 @@
     "file://*/*"
   ],
 
-  "background": {
-    "persistent": false,
-    "scripts": [
-      "background.js"
-    ]
-  },
-
-  "content_scripts": [
-    {
-      "matches": [
-        "http://*/*",
-        "https://*/*",
-        "file://*/*"
-      ],
-      "js": [
-        "content.js"
-      ],
-      "run_at": "document_end"
-    }
-  ],
-
-  "minimum_chrome_version": "26.0",
+  "minimum_chrome_version": "10.0",
   "devtools_page": "devtools.html"
 }

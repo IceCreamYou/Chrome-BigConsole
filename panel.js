@@ -1,4 +1,5 @@
 var HISTORY_MAX_LENGTH = 10;
+var MAX_RECURSION_DEPTH = 10;
 var SEVERITY = {
   TIP: 'tip',
   INFO: 'info',
@@ -6,18 +7,18 @@ var SEVERITY = {
   WARNING: 'warning',
   ERROR: 'error',
 };
-var history = [];
+var hist = [];
 function addToHistory(s) {
-  history.push(s);
-  if (history.length > HISTORY_MAX_LENGTH) {
-    history.shift();
+  hist.push(s);
+  if (hist.length > HISTORY_MAX_LENGTH) {
+    hist.shift();
   }
 }
 function addToConsole(s, input, sev) {
   var p = document.createElement('p');
   if (input) {
     p.className = 'input';
-    p.textContent = '>>> ' + (s+'').replace(/\n/g, ' ').substring(0, 255);
+    p.textContent = '>>> ' + (s+'').replace(/\r?\n|\n?\r/g, ' ');
   }
   else {
     p.appendChild(resultToOutput(s));
@@ -26,9 +27,16 @@ function addToConsole(s, input, sev) {
   document.getElementById('log-inner').appendChild(p);
   p.scrollIntoView(true);
 }
-function resultToOutput(s) {
+function resultToOutput(s, depth) {
   // TODO Use library that does this better and takes care of recursion
-  var span = document.createElement('span');
+  if (!depth) {
+    depth = 1;
+  }
+  else {
+    ++depth;
+  }
+  var span = document.createElement('span'), c, d, i, n, x;
+  if (depth > MAX_RECURSION_DEPTH) return span;
   if (typeof s === 'undefined') {
     span.className = 'undefined';
     span.textContent = 'undefined';
@@ -59,13 +67,13 @@ function resultToOutput(s) {
   }
   else if (s instanceof Array) {
     span.className = 'array';
-    var x = document.createElement('span');
+    x = document.createElement('span');
     x.textContent = '[';
     span.appendChild(x);
-    var c = document.createElement('span');
+    c = document.createElement('span');
     c.textContent = ', ';
-    for (var i = 0, l = s.length; i < l; i++) {
-      span.appendChild(resultToOutput(s[i]));
+    for (i = 0, l = s.length; i < l; i++) {
+      span.appendChild(resultToOutput(s[i], depth));
       if (i !== l-1) {
         span.appendChild(c.cloneNode(true));
       }
@@ -80,20 +88,20 @@ function resultToOutput(s) {
   }
   else {
     span.className = 'object';
-    var x = document.createElement('span');
+    x = document.createElement('span');
     x.textContent = 'Object {';
     span.appendChild(x);
-    var c = document.createElement('span');
+    c = document.createElement('span');
     c.textContent = ', ';
-    var d = document.createElement('span');
+    d = document.createElement('span');
     d.textContent = ': ';
-    var n = 0;
-    for (var i in s) {
+    n = 0;
+    for (i in s) {
       if (s.hasOwnProperty(i)) {
         n++;
-        span.appendChild(resultToOutput(i));
+        span.appendChild(resultToOutput(i, depth));
         span.appendChild(d.cloneNode(true));
-        span.appendChild(resultToOutput(s[i]));
+        span.appendChild(resultToOutput(s[i], depth));
         span.appendChild(c.cloneNode(true));
       }
     }
@@ -106,17 +114,26 @@ function resultToOutput(s) {
   }
   return span;
 }
-// Create a port with background page for message communication
+function prepareForEval(s) {
+  s = 'try { ' + s + ' } catch(BIGCONSOLE_EXCEPTION) { BIGCONSOLE_EXCEPTION; }';
+  return s;
+}
 window.onload = function() {
+  // Use a custom eval so we can test this page outside of dev tools for better inspection
+  var myEval;
   try {
-    var port = chrome.runtime.connect({name: "Eval in context"});
-    // Add the eval'd response to the console when the background page sends it back
-    port.onMessage.addListener(function (msg) {
-      addToConsole(msg, false);
-    });
+    myEval = chrome.devtools.inspectedWindow.eval;
   }
   catch(e) {
-    console.error(e);
+    myEval = function(x, y) {
+      try {
+        var z = eval(x);
+        y(z, false);
+      }
+      catch(ex) {
+        y(ex, true);
+      }
+    };
   }
   document.getElementById('run').addEventListener('click', function() {
     var s = document.getElementById('console').value;
@@ -124,8 +141,13 @@ window.onload = function() {
     try {
       // Ask the background page to ask the content script to inject a script
       // into the DOM that can finally eval `s` in the right context.
-      console.log('Posting message (panel.js): ' + s);
-      port.postMessage(s);
+      s = prepareForEval(s);
+      myEval(s, function(result, isError) {
+        if (result instanceof Error) {
+          isError = true;
+        }
+        addToConsole(result, false, isError ? SEVERITY.ERROR : SEVERITY.LOG);
+      });
     }
     catch(e) {
       addToConsole(e, false, SEVERITY.ERROR);
@@ -135,6 +157,18 @@ window.onload = function() {
     document.getElementById('console').value = '';
   });
   document.getElementById('log-inner').addEventListener('click', function(e) {
-    e.target.parentNode.className += ' removeWrap';
+    var cur = e.target, i = 0, max = 10;
+    // Find the first <p> ancestor
+    do {
+      i++;
+      cur = cur.parentNode;
+    } while (cur.parentNode && i < max && cur.nodeName.toLowerCase() !== 'p');
+    // Toggle the removeWrap class
+    if (cur.className.indexOf('removeWrap') == -1) {
+      cur.className += ' removeWrap';
+    }
+    else {
+      cur.className = cur.className.replace(/\bremoveWrap\b/, '');
+    }
   });
 };
