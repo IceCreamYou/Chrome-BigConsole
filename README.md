@@ -1,6 +1,8 @@
 Adds a panel to the Chrome Developer Tools that provides a multi-line split
 console, like in Firebug, with syntax highlighting.
 
+![Screenshot](https://raw.github.com/IceCreamYou/Chrome-BigConsole/master/screenshot.png)
+
 ## Why?
 
 Firefox is my primary browser, I like the split console in Firebug, and I hate
