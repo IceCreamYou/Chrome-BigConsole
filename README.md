@@ -5,18 +5,23 @@ console, like in Firebug, with syntax highlighting.
 
 ## Why?
 
-Firefox is my primary browser, I like the split console in Firebug, and I hate
-that Chrome doesn't have that, so I fixed it.
+I like the split console in Firebug, and I don't like that Chrome doesn't work
+exactly the same way, so I fixed it. Also, I learned how to write a Chrome
+extension.
 
-Sometimes you just want a block of code that persists beyond execution.
-Especially when you're running a lot of code in the console, you don't want to
-hit `shift+enter` to get a newline. Also, syntax highlighting.
+Chrome does have a built-in multiline split console called
+[Snippets](https://developers.google.com/chrome-developer-tools/docs/authoring-development-workflow#snippets).
+BigConsole is different in that it doesn't try to be an IDE, it just tries to
+be a multiline REPL. Specifically it has a vertical split layout, no saving
+blocks of code in files, there's a "Clear" button, and it has some nice editor
+things that come for free with Ace Editor.
 
-You could also just use [FirebugLite](https://getfirebug.com/firebuglite), but
-it is not persistent and appends itself to the DOM. There are also a lot of
-things it can't do since it is part of the page and not the chrome, so that
-means you have to switch back and forth with devtools. BigConsole is easier.
-Also, syntax highlighting.
+But mainly this is me being obsessive about controlling my environment.
+
+Using [FirebugLite](https://getfirebug.com/firebuglite) is a possible
+alternative, but it has to append itself to the DOM which results in a number
+of limitations. This results in a lot of switching back and forth with devtools.
+BigConsole is easier, plus it has syntax highlighting.
 
 ## Implementation
 
@@ -31,8 +36,6 @@ object types are not preserved. I have an idea for how to get around this but
 it is pretty complicated and maybe not worth the effort.
 
 **Note:** You can click on truncated console output to expand and collapse it.
-Also, the keyboard shortcut `CTRL+Enter` (or `Command+Enter` for Macs) will run
-the code in the editor as if you pressed the "Run" button.
 
 ## Status
 
