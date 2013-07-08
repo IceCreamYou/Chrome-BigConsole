@@ -31,6 +31,8 @@ object types are not preserved. I have an idea for how to get around this but
 it is pretty complicated and maybe not worth the effort.
 
 **Note:** You can click on truncated console output to expand and collapse it.
+Also, the keyboard shortcut `CTRL+Enter` (or `Command+Enter` for Macs) will run
+the code in the editor as if you pressed the "Run" button.
 
 ## Status
 
@@ -40,14 +42,20 @@ context just like the default devtools console. However, there are a bunch of
 features / fixes that would make it much better:
 
 - Allow printing cyclic objects to the console
+- Add executed command history
 - Output into the log should get pretty-printed better and ideally it should be
   possible to inspect returned objects. (This will probably be done by including
   another library...)
-- `console.log` and friends should go to the BigConsole if executed from there.
-  There are some experimental APIs that let us read from and write to the
-  default console from an extension, so once those hit the stable branch this
-  will get easier to do.
-- Adding executed command history would be nice
+- `console.log` currently only works as expected when it is called
+  synchronously. If `console.log` is called asynchronously after the code
+  finishes evaluating then it will actually try to record to the default
+  Console panel because the `console` object is swapped out only temporarily
+  while BigConsole scripts run.
+- No `console` commands other than `console.log` are supported yet.
+- It would be nice if commands that went to the default Console panel also went
+  to the BigConsole, and vice versa. There are some experimental APIs that will
+  make this possible, so once those hit the stable branch this could be
+  worth investigating.
 
 ## Installation
 

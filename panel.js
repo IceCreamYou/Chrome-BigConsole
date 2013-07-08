@@ -75,7 +75,7 @@ function resultToOutput(s, depth) {
     span.className = 'boolean';
     span.textContent = '"' + s + '"';
   }
-  else if (typeof s === 'function') {
+  else if (typeof s === 'function' || s instanceof Function) {
     span.className = 'function';
     span.textContent = s+'';
   }
@@ -168,6 +168,45 @@ function setupEditor() {
   editor.focus();
   return editor;
 }
+function setupConsole() {
+  var temp = function() {
+    if (window.console && !console.BIGCONSOLE) {
+      window._console = window.console;
+    }
+    if (window._bigconsole) {
+      window.console = window._bigconsole;
+      return;
+    }
+    window.console = {BIGCONSOLE: true};
+    console.__data = [];
+    console.log = function() {
+      for (var i = 0; i < arguments.length; i++) {
+        console.__data.push(arguments[i]);
+      }
+    };
+    console.__dump = function() {
+      var x = console.__data;
+      console.__data = [];
+      return x;
+    };
+  };
+  return '('+temp+')();';
+}
+function teardownConsole() {
+  var temp = function() {
+    var x = [];
+    try {
+      x = console.__dump();
+    } catch(e) {}
+    if (window._console) {
+      window._bigconsole = window.console;
+      window.console = window._console;
+      delete window._console;
+    }
+    return x;
+  };
+  return '('+temp+')();';
+}
 function prepareForEval(s) {
   return s;
 }
@@ -175,13 +214,18 @@ function run(editor) {
   var s = editor.getValue();
   addToConsole(s, true);
   s = prepareForEval(s);
-  BigConsole_myEval(s, function(result, isError) {
-    // The chrome documentation is wrong about the callback parameter values
-    if (isError) {
-      result = isError;
-      isError = true;
-    }
-    addToConsole(result, false, isError ? SEVERITY.ERROR : SEVERITY.LOG);
+  BigConsole_myEval(setupConsole() + s, function(result, isError) {
+    BigConsole_myEval(teardownConsole(), function(r, iE) {
+      // The chrome documentation is wrong about the callback parameter values
+      if (isError) {
+        result = isError;
+        isError = true;
+      }
+      for (var i = 0; i < r.length; i++) {
+        addToConsole(r[i], false);
+      }
+      addToConsole(result, false, isError ? SEVERITY.ERROR : SEVERITY.LOG);
+    });
   });
 }
 window.onload = function() {
