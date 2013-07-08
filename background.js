@@ -5,7 +5,7 @@ chrome.runtime.onConnect.addListener(function (port) {
     // Request a tab for sending needed information
     chrome.tabs.query({'active': true,'currentWindow': true}, function (tabs) {
       // Send message to content script
-      if (tab) {
+      if (tabs && tabs[0]) {
         console.log('Sending message to content script on tab ' + tabs[0].id + ' (background.js)');
         chrome.tabs.sendMessage(tabs[0].id, message);
       }

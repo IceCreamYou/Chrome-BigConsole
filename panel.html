@@ -1,5 +1,7 @@
+<!DOCTYPE html>
 <html>
 <head>
+  <meta charset="UTF-8">
   <title>BigConsole</title>
   <style>
 * {
@@ -9,7 +11,7 @@
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
-body {
+html, body {
   height: 100%;
   margin: 0;
 }
@@ -65,7 +67,8 @@ body {
   right: 0;
   top: 0;
 }
-textarea {
+#editor {
+  font-size: 16px;
   height: 100%;
   margin: 0;
   width: 100%;
@@ -81,6 +84,7 @@ textarea {
   right: 0;
 }
   </style>
+  <script src="ace/ace.js" charset="utf-8"></script>
   <script src="panel.js"></script>
 </head>
 <body>
@@ -90,8 +94,7 @@ textarea {
 </div>
 <div id="console-wrapper">
   <div id="textarea-wrapper">
-    <!-- TODO: Use AceEditor to get syntax highlighting -->
-    <textarea id="console"></textarea>
+    <pre id="editor"></pre>
 </div>
   <div id="buttons">
     <button id="run">Run</button>

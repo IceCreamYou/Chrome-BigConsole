@@ -1,5 +1,23 @@
+// Use a custom eval so we can test this page outside of dev tools for better inspection
+var BigConsole_myEval;
+try {
+  BigConsole_myEval = chrome.devtools.inspectedWindow.eval;
+}
+catch(e) {
+  BigConsole_myEval = function(strToEval, callbackWithResult) {
+    try {
+      callbackWithResult(eval(strToEval), false);
+    }
+    catch(ex) {
+      callbackWithResult(undefined, ex);
+    }
+  };
+}
+
+(function() {
+
 var HISTORY_MAX_LENGTH = 10;
-var MAX_RECURSION_DEPTH = 10;
+var MAX_RECURSION_DEPTH = 10; // Call stack max is 1000 at time of writing
 var SEVERITY = {
   TIP: 'tip',
   INFO: 'info',
@@ -114,50 +132,68 @@ function resultToOutput(s, depth) {
   }
   return span;
 }
+function setupEditor() {
+  var editor = ace.edit("editor");
+  editor.setTheme("ace/theme/monokai");
+  editor.setHighlightActiveLine(true);
+  editor.setShowPrintMargin(true);
+  editor.setBehavioursEnabled(true);
+  editor.setDisplayIndentGuides(true);
+  editor.setHighlightActiveLine(true);
+  editor.setHighlightGutterLine(true);
+  editor.setHighlightSelectedWord(true);
+  editor.setKeyboardHandler('windows');
+  editor.setPrintMarginColumn(80);
+  editor.setShowFoldWidgets(true);
+  editor.setShowInvisibles(false);
+  editor.setWrapBehavioursEnabled(false);
+  var session = editor.getSession();
+  session.setMode("ace/mode/javascript");
+  session.setTabSize(2);
+  session.setUseSoftTabs(true);
+  session.setUseWrapMode(true);
+  session.setWrapLimitRange(null, null); // free wrap
+  editor.commands.removeCommands(["findnext", "gotoline"]); // Default is CTRL+L and CTRL+K which is super annoying
+  editor.commands.addCommands([{
+    name: "execute",
+    bindKey: "ctrl+enter",
+    exec: run,
+    readOnly: true
+  }, {
+    name: "findnext",
+    bindKey: {win: "Ctrl-G", mac: "Command-G"},
+    exec: function(editor) { editor.findNext(); },
+    readOnly: true
+  }]);
+  editor.focus();
+  return editor;
+}
 function prepareForEval(s) {
   return s;
 }
+function run(editor) {
+  var s = editor.getValue();
+  addToConsole(s, true);
+  s = prepareForEval(s);
+  BigConsole_myEval(s, function(result, isError) {
+    // The chrome documentation is wrong about the callback parameter values
+    if (isError) {
+      result = isError;
+      isError = true;
+    }
+    addToConsole(result, false, isError ? SEVERITY.ERROR : SEVERITY.LOG);
+  });
+}
 window.onload = function() {
-  // Use a custom eval so we can test this page outside of dev tools for better inspection
-  var myEval;
-  try {
-    myEval = chrome.devtools.inspectedWindow.eval;
-  }
-  catch(e) {
-    myEval = function(x, y) {
-      try {
-        var z = eval(x);
-        y(z, false);
-      }
-      catch(ex) {
-        y(undefined, ex);
-      }
-    };
-  }
+  var editor = setupEditor();
   document.getElementById('run').addEventListener('click', function() {
-    var s = document.getElementById('console').value;
-    addToConsole(s, true);
-    try {
-      // Ask the background page to ask the content script to inject a script
-      // into the DOM that can finally eval `s` in the right context.
-      s = prepareForEval(s);
-      myEval(s, function(result, isError) {
-        if (isError) {
-          result = isError;
-          isError = true;
-        }
-        addToConsole(result, false, isError ? SEVERITY.ERROR : SEVERITY.LOG);
-      });
-    }
-    catch(e) {
-      addToConsole(e, false, SEVERITY.ERROR);
-    }
+    run(editor);
   });
   document.getElementById('clear').addEventListener('click', function() {
-    document.getElementById('console').value = '';
+    editor.setValue('');
   });
   document.getElementById('log-inner').addEventListener('click', function(e) {
-    var cur = e.target, i = 0, max = 10;
+    var cur = e.target, i = 0, max = MAX_RECURSION_DEPTH+2;
     // Find the first <p> ancestor
     do {
       i++;
@@ -172,3 +208,5 @@ window.onload = function() {
     }
   });
 };
+
+}).call(this);
