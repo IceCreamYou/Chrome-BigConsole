@@ -56,6 +56,7 @@ features / fixes that would make it much better:
   to the BigConsole, and vice versa. There are some experimental APIs that will
   make this possible, so once those hit the stable branch this could be
   worth investigating.
+- The extension needs an icon for the extensions page!
 
 ## Installation
 
@@ -78,6 +79,8 @@ upgraded version will be loaded.
 
 [Isaac Sukin](http://www.isaacsukin.com/contact)
 ([@IceCreamYou](https://twitter.com/IceCreamYou)) is the author of this project.
+
+Contributions are very much welcome!
 
 The code is released under the [MIT License](http://opensource.org/licenses/MIT)
 except the ace editor code, which is released under the BSD license as described
