@@ -72,7 +72,7 @@ function resultToOutput(s, depth) {
     span.textContent = s+'';
   }
   else if (typeof s === 'string' || s instanceof String) {
-    span.className = 'boolean';
+    span.className = 'string';
     span.textContent = '"' + s + '"';
   }
   else if (typeof s === 'function' || s instanceof Function) {
