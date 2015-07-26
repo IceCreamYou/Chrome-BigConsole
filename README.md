@@ -1,65 +1,41 @@
 Adds a panel to the Chrome Developer Tools that provides a multi-line split
-console, like in Firebug, with syntax highlighting.
+console, like in Firebug.
 
 ![Screenshot](https://raw.github.com/IceCreamYou/Chrome-BigConsole/master/screenshot.png)
+
+Includes:
+
+- Vertical split style multiline REPL
+- Syntax highlighting and nice editor things thanks to Ace Editor
+- "Run" button or CTRL+Enter to execute code
+- "Clear" button to clear REPL
+- "History" drop-down to restore previously executed code
 
 ## Why?
 
 I like the split console in Firebug, and I don't like that Chrome doesn't work
-exactly the same way, so I fixed it. Also, I learned how to write a Chrome
-extension.
+exactly the same way, so I fixed it.
 
 Chrome does have a built-in multiline split console called
 [Snippets](https://developers.google.com/chrome-developer-tools/docs/authoring-development-workflow#snippets).
 BigConsole is different in that it doesn't try to be an IDE, it just tries to
-be a multiline REPL. Specifically it has a vertical split layout, no saving
-blocks of code in files, there's a "Clear" button, and it has some nice editor
-things that come for free with Ace Editor.
-
-But mainly this is me wanting to control my environment in a generic way.
+be a multiline REPL with syntax highlighting.
 
 Using [FirebugLite](https://getfirebug.com/firebuglite) is a possible
-alternative, but it has to append itself to the DOM which results in a number
-of limitations. This results in a lot of switching back and forth with devtools.
-BigConsole is easier, plus it has syntax highlighting.
+alternative, but it has a number of limitations. This results in a lot of
+switching back and forth with devtools. BigConsole is easier, plus it has
+syntax highlighting.
 
-## Implementation
+## Pending improvements
 
-BigConsole is currently implemented as a new panel in the Chrome developer
-tools. It would be better if it could override the default Console tab but
-Chrome does not currently expose the APIs to do that.
-
-There are some limits to the way code is currently being evaluated. Most
-importantly, the result of evaluation is converted to JSON and back before this
-extension receives it, which means only acyclic objects can be inspected and
-object types are not preserved. I have an idea for how to get around this but
-it is pretty complicated and maybe not worth the effort.
-
-**Note:** You can click on truncated console output to expand and collapse it.
-
-## Status
-
-BigConsole currently does most of what it was designed to do. That is, it
-provides a multiline console and log which evaluates JavaScript in the page
-context just like the default devtools console. However, there are a bunch of
-features / fixes that would make it much better:
-
-- Allow printing cyclic objects to the console
-- Add executed command history
-- Output into the log should get pretty-printed better and ideally it should be
-  possible to inspect returned objects. (This will probably be done by including
-  another library...)
-- `console.log` currently only works as expected when it is called
-  synchronously. If `console.log` is called asynchronously after the code
-  finishes evaluating then it will actually try to record to the default
-  Console panel because the `console` object is swapped out only temporarily
-  while BigConsole scripts run.
-- No `console` commands other than `console.log` are supported yet.
-- It would be nice if commands that went to the default Console panel also went
-  to the BigConsole, and vice versa. There are some experimental APIs that will
-  make this possible, so once those hit the stable branch this could be
-  worth investigating.
-- The extension needs an icon for the extensions page!
+- There seems to be an issue with copy-pasted code failing to execute, at least
+  on Windows; probably something to do with line endings. Works fine when typed
+  by hand.
+- `console` functions log to the normal console instead of BigConsole. It would
+  be nice if BigConsole showed everything the normal console shows and vice
+  versa.
+- It would be nice if large objects were printed in a collapsed format
+- The version of Ace Editor this project uses could use updating
 
 ## Installation
 
@@ -81,10 +57,13 @@ upgraded version will be loaded.
 ## Credits
 
 [Isaac Sukin](http://www.isaacsukin.com/contact)
-([@IceCreamYou](https://twitter.com/IceCreamYou)) is the author of this project.
+([@IceCreamYou](https://twitter.com/IceCreamYou)) is the author of this
+project.
 
 Contributions are very much welcome!
 
-The code is released under the [MIT License](http://opensource.org/licenses/MIT)
-except the ace editor code, which is released under the BSD license as described
-at the top of the relevant files.
+As described in the
+[license file](https://github.com/IceCreamYou/Chrome-BigConsole/blob/master/LICENSE.md),
+the Ace Editor code is included under the BSD 3-Clause License, the PrettyPrint
+code is included under a modified BSD 2-Clause License, and the rest of this
+project is released under the MIT License.

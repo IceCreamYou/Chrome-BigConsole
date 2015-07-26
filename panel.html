@@ -29,7 +29,7 @@ html, body {
   padding: 10px;
   width: 100%;
 }
-#log-inner p {
+div.log-item {
   border-bottom: 1px solid #DDDDDD;
   margin: 0;
   overflow: hidden;
@@ -37,16 +37,19 @@ html, body {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-#log-inner p:last-child {
+div.log-item:last-child {
     border-bottom-width: 0;
 }
-#log-inner p.removeWrap {
+div.log-item.removeWrap {
   overflow: auto;
   text-overflow: clip;
   white-space: normal;
 }
-#log-inner p.input {
+div.log-item.input {
   color: #1C90C5;
+}
+div.log-item.input::before {
+  content: ">>> ";
 }
 .error {
   color: red;
@@ -86,8 +89,12 @@ html, body {
   position: absolute;
   right: 0;
 }
+#snippets {
+  display: inline-block;
+}
   </style>
   <script src="ace/ace.js" charset="utf-8"></script>
+  <script src="prettyprint.min.js"></script>
   <script src="panel.js"></script>
 </head>
 <body>
@@ -102,7 +109,8 @@ html, body {
   <div id="buttons">
     <button id="run">Run</button>
     <button id="clear">Clear</button>
-    <!-- TODO: Add history -->
+    <div id="snippets">
+    </div>
   </div>
 </div>
 <div style="clear: both;"></div>
