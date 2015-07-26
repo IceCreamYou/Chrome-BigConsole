@@ -1,2 +1,2 @@
-chrome.devtools.panels.create('BigConsole', 'icon.png', 'panel.html', function(panel) {
+chrome.devtools.panels.create('BigConsole', 'icon16.png', 'panel.html', function(panel) {
 });
