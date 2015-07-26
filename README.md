@@ -7,24 +7,23 @@ Includes:
 
 - Vertical split style multiline REPL
 - Syntax highlighting and nice editor things thanks to Ace Editor
+- Pretty-printed output
 - "Run" button or CTRL+Enter to execute code
 - "Clear" button to clear REPL
 - "History" drop-down to restore previously executed code
 
 ## Why?
 
-I like the split console in Firebug, and I don't like that Chrome doesn't work
-exactly the same way, so I fixed it.
-
-Chrome does have a built-in multiline split console called
+Chrome has a built-in multiline split console called
 [Snippets](https://developers.google.com/chrome-developer-tools/docs/authoring-development-workflow#snippets).
-BigConsole is different in that it doesn't try to be an IDE, it just tries to
-be a multiline REPL with syntax highlighting.
+However, I found that I could iterate and try out code faster in Firebug's
+console than I could in Snippets. I built BigConsole to be the Chrome
+equivalent of Firebug's BigConsole. Where Snippets is more like a light IDE,
+BigConsole is simpler and geared towards iterating on code as quickly as
+possible in a multiline, syntax-highlighted REPL.
 
 Using [FirebugLite](https://getfirebug.com/firebuglite) is a possible
-alternative, but it has a number of limitations. This results in a lot of
-switching back and forth with devtools. BigConsole is easier, plus it has
-syntax highlighting.
+alternative, but it has a number of limitations.
 
 ## Pending improvements
 
