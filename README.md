@@ -27,14 +27,10 @@ alternative, but it has a number of limitations.
 
 ## Pending improvements
 
-- There seems to be an issue with copy-pasted code failing to execute, at least
-  on Windows; probably something to do with line endings. Works fine when typed
-  by hand.
 - `console` functions log to the normal console instead of BigConsole. It would
   be nice if BigConsole showed everything the normal console shows and vice
   versa.
 - It would be nice if large objects were printed in a collapsed format
-- The version of Ace Editor this project uses could use updating
 
 ## Installation
 

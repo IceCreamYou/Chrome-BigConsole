@@ -168,7 +168,7 @@ function prepareForEval(snippet) {
       '}' +
       'var data;' +
       'try {' +
-        'data = eval("' + snippet.replace(/"/g, '\\"').replace(/\n/g, '\\n') + '");' +
+        'data = eval("' + snippet.replace(/"/g, '\\"').replace(/\r?\n|\r\n?/g, '\\n') + '");' +
       '}' +
       'catch (exception) {' +
         'data = exception;' +
@@ -247,23 +247,21 @@ function run(editor) {
  * Sets up the Ace Editor.
  */
 function setupEditor() {
-  var editor = ace.edit("editor");
-  editor.setTheme("ace/theme/monokai");
-  editor.setHighlightActiveLine(true);
-  editor.setShowPrintMargin(true);
+  var editor = ace.edit('editor');
+  editor.setTheme('ace/theme/monokai');
   editor.setBehavioursEnabled(true);
   editor.setDisplayIndentGuides(true);
   editor.setHighlightActiveLine(true);
   editor.setHighlightGutterLine(true);
   editor.setHighlightSelectedWord(true);
-  editor.setKeyboardHandler('windows');
   editor.setPrintMarginColumn(80);
   editor.setShowFoldWidgets(true);
   editor.setShowInvisibles(false);
+  editor.setShowPrintMargin(true);
   editor.setWrapBehavioursEnabled(false);
 
   var session = editor.getSession();
-  session.setMode("ace/mode/javascript");
+  session.setMode('ace/mode/javascript');
   session.setTabSize(2);
   session.setUseSoftTabs(true);
   session.setUseWrapMode(true);
@@ -276,15 +274,15 @@ function setupEditor() {
     'transposeletters', // Defaults to Ctrl-T
   ]);
   editor.commands.addCommands([{
-      name: "execute",
-      bindKey: "ctrl+enter",
+      name: 'execute',
+      bindKey: 'ctrl+enter',
       exec: run,
       readOnly: true,
     }, {
-      name: "findnext",
+      name: 'findnext',
       bindKey: {
-        win: "Ctrl-G",
-        mac: "Command-G",
+        win: 'Ctrl-G',
+        mac: 'Command-G',
       },
       exec: function(editor) {
         editor.findNext();
