@@ -193,17 +193,22 @@ function prepareForEval(snippet) {
       prettyPrintString +
       'var wrapperElement = document.createElement(\'div\');' +
       'wrapperElement.appendChild(prettyPrint(data));' +
-      'var logs = {};' +
+      'var data = wrapperElement.innerHTML,' +
+          'logs = {};' +
       'for (prop in console.__BIGCONSOLE) {' +
         'if (console.__BIGCONSOLE.hasOwnProperty(prop)) {' +
           'logs[prop] = [];' +
           'console.__BIGCONSOLE[prop].forEach(function(item) {' +
-            'logs[prop].push(item.length === 1 ? prettyPrint(item[0]) : prettyPrint(item));' +
+            'while (wrapperElement.lastChild) {' +
+              'wrapperElement.removeChild(wrapperElement.lastChild);' +
+            '}' +
+            'wrapperElement.appendChild(item.length === 1 ? prettyPrint(item[0]) : prettyPrint(item));' +
+            'logs[prop].push(wrapperElement.innerHTML);' +
           '});' +
         '}' +
       '}' +
       'return {' +
-        'data: wrapperElement.innerHTML,' +
+        'data: data,' +
         'logs: logs,' +
       '};' +
     '})();';

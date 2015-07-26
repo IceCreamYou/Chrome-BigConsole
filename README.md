@@ -27,10 +27,8 @@ alternative, but it has a number of limitations.
 
 ## Known issues
 
-- The only `console` functions that log to BigConsole are `error`, `info`,
-  `log`, and `warn` - and these only do so when called synchronously from
-  BigConsole itself. (If they log to BigConsole, they will also log to the
-  normal console.) It would be nice if BigConsole showed everything the normal
+- The `console` functions (for example, `console.log()`) currently do not log
+  to BigConsole. It would be nice if BigConsole showed everything the normal
   console shows and vice versa.
 - It would be nice if large objects were printed in a collapsed format and only
   expanded when clicked on.
