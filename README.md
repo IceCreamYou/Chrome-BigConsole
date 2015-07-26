@@ -32,6 +32,7 @@ alternative, but it has a number of limitations.
   console shows and vice versa.
 - It would be nice if large objects were printed in a collapsed format and only
   expanded when clicked on.
+- It would be nice if the panes were resizable.
 - The pretty-printing of most objects takes up an unnecessary amount of space.
 
 ## Installation
