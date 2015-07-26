@@ -8,7 +8,7 @@ Includes:
 - Vertical split style multiline REPL
 - Syntax highlighting and nice editor things thanks to Ace Editor
 - Pretty-printed output
-- "Run" button or CTRL+Enter to execute code
+- "Run" button or Ctrl-Enter to execute code
 - "Clear" button to clear REPL
 - "History" drop-down to restore previously executed code
 
@@ -36,6 +36,15 @@ alternative, but it has a number of limitations.
 
 ## Installation
 
+You can get the extension from the
+[Chrome Web Store](https://chrome.google.com/webstore/detail/bigconsole/klommbdmeefgobphaflhmnieheipjajm).
+
+Then go to any page you want to inspect, open the devtools (Ctrl-Shift-I), and
+switch to the BigConsole tab.
+
+If you want to modify/improve the extension, you'll need to install it in
+developer mode:
+
 1. Clone the code
 2. Go to `chrome://extensions`
 3. Check the "Developer mode" checkbox at the top of the page
@@ -43,13 +52,10 @@ alternative, but it has a number of limitations.
    of the page
 5. Navigate to the folder with the extension code in it and click "OK"
 
-Then go to any page you want to inspect, open the devtools (CTRL+SHIFT+I), and
-switch to the BigConsole tab.
-
-To update, just update the code (e.g. with `git pull`), then go to
-`chrome://extensions` and click the "Reload (CTRL+R)" link under the extension.
-If you have the devtools open, you'll have to close and reopen it before the
-upgraded version will be loaded.
+To update in developer mode, pull the latest code (e.g. with `git pull`), then
+go to `chrome://extensions` and click the "Reload (CTRL+R)" link under the
+extension. If you have the devtools open, you'll have to close and reopen it
+before the upgraded version will be loaded.
 
 ## Credits
 
