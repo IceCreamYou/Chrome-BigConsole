@@ -145,26 +145,43 @@ var SnippetHistory = (function() {
 
 /**
  * Wrap the snippet so that it executes as desired.
+ *
+ * Instead of wrapping the console object, it would be convenient to use
+ * https://developer.chrome.com/extensions/experimental_devtools_console to
+ * just display whatever the normal console would display. However, that API
+ * has been experimental and mostly undocumented for years, so it doesn't look
+ * like using it is a viable path at this time.
  */
 function prepareForEval(snippet) {
-  // TODO use https://developer.chrome.com/extensions/experimental_devtools_console to just display whatever the normal console would display
   return '(function() {' +
+      'var prop;' +
       'if (typeof console.__BIGCONSOLE !== \'object\') {' +
         'console.__BIGCONSOLE = {' +
           'error: [],' +
           'info: [],' +
           'log: [],' +
           'warn: [],' +
-        '};' +/* TODO
-        'var _console = console;' +
-        'for (var prop in console.__BIGCONSOLE) {' +
+        '};' +
+        'var c2 = {};' +
+        'for (prop in console.__BIGCONSOLE) {' +
           'if (console.__BIGCONSOLE.hasOwnProperty(prop)) {' +
-            'console[prop] = function() {' +
-              '_console[prop].apply(this, arguments);' +
-              'console.__BIGCONSOLE[prop].push(Array.prototype.slice.call(arguments));' +
-            '};' +
+            'c2[prop] = console[prop];' +
+            '(function(prop) {' +
+              'console[prop] = function() {' +
+                'c2[prop].apply(this, arguments);' +
+                'console.__BIGCONSOLE[prop].push(Array.prototype.slice.call(arguments));' +
+              '};' +
+            '})(prop);' +
           '}' +
-        '}' +*/
+        '}' +
+      '}' +
+      'else {' +
+        'console.__BIGCONSOLE = {' +
+          'error: [],' +
+          'info: [],' +
+          'log: [],' +
+          'warn: [],' +
+        '};' +
       '}' +
       'var data;' +
       'try {' +
@@ -176,9 +193,18 @@ function prepareForEval(snippet) {
       prettyPrintString +
       'var wrapperElement = document.createElement(\'div\');' +
       'wrapperElement.appendChild(prettyPrint(data));' +
+      'var logs = {};' +
+      'for (prop in console.__BIGCONSOLE) {' +
+        'if (console.__BIGCONSOLE.hasOwnProperty(prop)) {' +
+          'logs[prop] = [];' +
+          'console.__BIGCONSOLE[prop].forEach(function(item) {' +
+            'logs[prop].push(item.length === 1 ? prettyPrint(item[0]) : prettyPrint(item));' +
+          '});' +
+        '}' +
+      '}' +
       'return {' +
         'data: wrapperElement.innerHTML,' +
-        'logs: console.__BIGCONSOLE' +
+        'logs: logs,' +
       '};' +
     '})();';
 }
@@ -230,7 +256,7 @@ function run(editor) {
       if (result.logs) {
         ['error', 'info', 'log', 'warn'].forEach(function(severity) {
           result.logs[severity].forEach(function(item) {
-            addToConsole(prettyPrint(item), severity);
+            addToConsole(item, severity);
           });
         });
       }

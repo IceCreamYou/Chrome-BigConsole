@@ -25,12 +25,16 @@ possible in a multiline, syntax-highlighted REPL.
 Using [FirebugLite](https://getfirebug.com/firebuglite) is a possible
 alternative, but it has a number of limitations.
 
-## Pending improvements
+## Known issues
 
-- `console` functions log to the normal console instead of BigConsole. It would
-  be nice if BigConsole showed everything the normal console shows and vice
-  versa.
-- It would be nice if large objects were printed in a collapsed format
+- The only `console` functions that log to BigConsole are `error`, `info`,
+  `log`, and `warn` - and these only do so when called synchronously from
+  BigConsole itself. (If they log to BigConsole, they will also log to the
+  normal console.) It would be nice if BigConsole showed everything the normal
+  console shows and vice versa.
+- It would be nice if large objects were printed in a collapsed format and only
+  expanded when clicked on.
+- The pretty-printing of most objects takes up an unnecessary amount of space.
 
 ## Installation
 
@@ -44,7 +48,7 @@ alternative, but it has a number of limitations.
 Then go to any page you want to inspect, open the devtools (CTRL+SHIFT+I), and
 switch to the BigConsole tab.
 
-To upgrade, just update the code (e.g. with `git pull`), then go to
+To update, just update the code (e.g. with `git pull`), then go to
 `chrome://extensions` and click the "Reload (CTRL+R)" link under the extension.
 If you have the devtools open, you'll have to close and reopen it before the
 upgraded version will be loaded.
