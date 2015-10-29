@@ -19,7 +19,7 @@ html, body {
   background-color: #F6F6F6;
   float: left;
   height: 100%;
-  width: 60%;
+  width: calc(50% - 2px);
 }
 #log-inner {
   font-family: "Lucida Console", monospace;
@@ -28,6 +28,16 @@ html, body {
   overflow-y: scroll;
   padding: 10px;
   width: 100%;
+}
+#btn-resize {
+  float: left;
+  height: 100%;
+  width: 4px;
+  background: transparent;
+  padding: 0;
+  border: none;
+  outline: none;
+  cursor: ew-resize;
 }
 div.log-item {
   border-bottom: 1px solid #DDDDDD;
@@ -64,7 +74,7 @@ div.log-item.input::before {
   float: right;
   height: 100%;
   position: relative;
-  width: 40%;
+  width: calc(50% - 2px);
 }
 #textarea-wrapper {
   bottom: 28px;
@@ -102,10 +112,11 @@ div.log-item.input::before {
   <div id="log-inner">
   </div>
 </div>
+<a id="btn-resize" draggable="true"></a>
 <div id="console-wrapper">
   <div id="textarea-wrapper">
     <pre id="editor"></pre>
-</div>
+  </div>
   <div id="buttons">
     <button id="run">Run</button>
     <button id="clear">Clear</button>
@@ -114,5 +125,6 @@ div.log-item.input::before {
   </div>
 </div>
 <div style="clear: both;"></div>
+<script src="layout.js"></script>
 </body>
 </html>
