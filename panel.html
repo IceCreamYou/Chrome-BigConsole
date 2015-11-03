@@ -29,15 +29,14 @@ html, body {
   padding: 10px;
   width: 100%;
 }
-#btn-resize {
+#drag-resize-bar {
+  background-color: transparent;
+  border: 0 none;
+  cursor: ew-resize;
   float: left;
   height: 100%;
-  width: 4px;
-  background: transparent;
   padding: 0;
-  border: none;
-  outline: none;
-  cursor: ew-resize;
+  width: 4px;
 }
 div.log-item {
   border-bottom: 1px solid #DDDDDD;
@@ -103,16 +102,13 @@ div.log-item.input::before {
   display: inline-block;
 }
   </style>
-  <script src="ace/src/ace.js" charset="utf-8"></script>
-  <script src="prettyprint.min.js"></script>
-  <script src="panel.js"></script>
 </head>
 <body>
 <div id="log">
   <div id="log-inner">
   </div>
 </div>
-<a id="btn-resize" draggable="true"></a>
+<span id="drag-resize-bar" draggable="true"></span>
 <div id="console-wrapper">
   <div id="textarea-wrapper">
     <pre id="editor"></pre>
@@ -125,6 +121,9 @@ div.log-item.input::before {
   </div>
 </div>
 <div style="clear: both;"></div>
+<script src="ace/src/ace.js" charset="utf-8"></script>
+<script src="prettyprint.min.js"></script>
+<script src="panel.js"></script>
 <script src="layout.js"></script>
 </body>
 </html>

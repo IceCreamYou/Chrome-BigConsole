@@ -1,23 +1,25 @@
-var logPane = document.getElementById('log');
-var consolePane = document.getElementById('console-wrapper');
-var resizeBtn = document.getElementById('btn-resize');
+/**
+ * Allows resizing the console and log panes.
+ */
+(function() {
 
-resizeBtn.addEventListener('drag', handleDrag);
+var logPane = document.getElementById('log'),
+    consolePane = document.getElementById('console-wrapper');
 
-window.onresize = function(){
-  // updateLayout(resizeBtn.offsetLeft);
+// Set the pane widths based on drag position.
+document.getElementById('drag-resize-bar').addEventListener('drag', function(event) {
+  if (event.x) {
+    var maxWidth = window.innerWidth - this.offsetWidth,
+        logPaneWidth = Math.min(Math.max(event.x, 0), maxWidth);
+    logPane.style.width = logPaneWidth + 'px';
+    consolePane.style.width = (maxWidth - logPaneWidth) + 'px';
+  }
+});
+
+// If the window is resized, reset the pane proportions.
+window.addEventListener('resize', function() {
   logPane.style.width = '';
   consolePane.style.width = '';
-}
+});
 
-function handleDrag(ev) {
-  var offsetX = ev.x;
-  updateLayout(offsetX);
-}
-
-function updateLayout(offset) {
-  if (offset) {
-    logPane.style.width = offset + 'px';
-    consolePane.style.width = (window.innerWidth - offset - resizeBtn.offsetWidth) + 'px';
-  }
-}
+}).call(this);
