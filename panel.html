@@ -11,7 +11,8 @@
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
-html, body {
+html,
+body {
   height: 100%;
   margin: 0;
 }
@@ -101,8 +102,9 @@ div.log-item.input::before {
 #snippets {
   display: inline-block;
 }
-button,
-select {
+/* Copied directly from Chrome Dev Tools ui/textButton.css for consistency. */
+#buttons button,
+#buttons select {
   background-image: linear-gradient(hsl(0, 0%, 93%), hsl(0, 0%, 93%) 38%, hsl(0, 0%, 87%));
   border: 1px solid hsla(0, 0%, 0%, 0.25);
   border-radius: 2px;
@@ -110,10 +112,10 @@ select {
   color: hsl(0, 0%, 27%);
   font-size: 12px;
   margin: 0 1px 0 0;
-  text-shadow: 0 1px 0 hsl(0, 0%, 94%);
-  min-height: 2em !important;
+  min-height: 2em;
   padding-left: 10px;
   padding-right: 10px;
+  text-shadow: 0 1px 0 hsl(0, 0%, 94%);
   -webkit-user-select: none;
 }
   </style>
