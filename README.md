@@ -33,6 +33,9 @@ alternative, but it has a number of limitations.
 - It would be nice if large objects were printed in a collapsed format and only
   expanded when clicked on.
 - The pretty-printing of most objects takes up an unnecessary amount of space.
+- If a single run of the code in BigConsole creates console logs of multiple
+  types, the output is not guaranteed to be in the same order in which the logs
+  were created.
 
 ## Installation
 
