@@ -183,7 +183,13 @@ function prepareForEval(snippet) {
           'warn: [],' +
         '};' +
       '}' +
-      'var data;' +
+      'var data,' +
+          '__CLEAR = clear,' +
+          'didClear = false;' +
+      'clear = function() {' +
+        'didClear = true;' +
+        '__CLEAR();' +
+      '};' +
       'try {' +
         'data = eval("' + snippet.replace(/"/g, '\\"').replace(/\r?\n|\r\n?/g, '\\n') + '");' +
       '}' +
@@ -208,6 +214,7 @@ function prepareForEval(snippet) {
         '}' +
       '}' +
       'return {' +
+        'clear: didClear,' +
         'data: data,' +
         'logs: logs,' +
       '};' +
@@ -257,6 +264,9 @@ function run(editor) {
       if (isError || typeof result !== 'object') {
         addToConsole(prettyPrint(isError), SEVERITY.ERROR);
         return;
+      }
+      if (result.clear) {
+        document.getElementById('log-inner').innerHTML = '';
       }
       if (result.logs) {
         ['error', 'info', 'log', 'warn'].forEach(function(severity) {
