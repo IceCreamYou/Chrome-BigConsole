@@ -192,7 +192,7 @@ function prepareForEval(snippet) {
       '};' +
       'try {' +
         'data = eval("' + snippet.replace(
-          /\0|\'|\"|\\|\n|\r|\v|\t|[\b]|\f|\u[0-9a-f]{1,6}|\x[0-9a-f]{2}/g,
+          /\0|\'|\"|\\|\n|\r|\v|\t|[\b]|\f/g,
           function(match) {
             // Escape string escape sequences.
             return '\\' + match;
