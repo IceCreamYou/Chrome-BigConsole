@@ -294,6 +294,7 @@ function run(editor) {
  * Sets up the Ace Editor.
  */
 function setupEditor() {
+  var langTools = ace.require('ace/ext/language_tools');
   var editor = ace.edit('editor');
   editor.setTheme('ace/theme/monokai');
   editor.setBehavioursEnabled(true);
@@ -306,6 +307,11 @@ function setupEditor() {
   editor.setShowInvisibles(false);
   editor.setShowPrintMargin(true);
   editor.setWrapBehavioursEnabled(false);
+  editor.setOptions({
+      enableBasicAutocompletion: true,
+	  enableSnippets: true,
+      enableLiveAutocompletion: true
+  });
 
   var session = editor.getSession();
   session.setMode('ace/mode/javascript');
@@ -352,6 +358,10 @@ window.addEventListener('load', function() {
   });
   document.getElementById('clear').addEventListener('click', function() {
     editor.setValue('');
+  });
+  document.getElementById('theme').addEventListener('change', function() {
+	  var themeChoice = document.getElementById('theme').value;
+	  editor.setTheme(themeChoice);
   });
 
   // Put the selected historical snippet in the editor.
