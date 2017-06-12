@@ -371,4 +371,14 @@ window.addEventListener('load', function() {
   });
 });
 
+chrome.storage.onChanged.addListener(function (items) {
+  document.getElementById('container').setAttribute("data-layout", items.layout.newValue);
+  addToConsole(items.layout.newValue, SEVERITY.INPUT);
+});
+chrome.storage.local.get({
+	layout: "right"
+}, function (items) {
+	document.getElementById('container').setAttribute("data-layout", items.layout);
+});
+
 }).call(this);
