@@ -375,15 +375,24 @@ window.addEventListener('load', function() {
       event.target.classList.toggle('removeWrap');
     }
   });
-});
 
-chrome.storage.onChanged.addListener(function (items) {
-  document.getElementById('container').setAttribute("data-layout", items.layout.newValue);
-});
-chrome.storage.local.get({
-	layout: "right"
-}, function (items) {
-	document.getElementById('container').setAttribute("data-layout", items.layout);
+  chrome.storage.onChanged.addListener(function (items) {
+  // addToConsole(JSON.stringify(items), "input");
+    if(items.layout){
+      document.getElementById('container').setAttribute("data-layout", items.layout.newValue);
+    }
+    if(items.theme) {
+      editor.setTheme(items.theme.newValue);
+    }
+  });
+
+  chrome.storage.local.get({
+  	layout: "right",
+  	theme: "ace/theme/monokai"
+  }, function (items) {
+  	document.getElementById('container').setAttribute("data-layout", items.layout);
+    editor.setTheme(items.theme);
+  });
 });
 
 }).call(this);
