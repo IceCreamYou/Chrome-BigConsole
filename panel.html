@@ -16,11 +16,26 @@ body {
   height: 100%;
   margin: 0;
 }
+#container {
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+#container[data-layout="left"] {
+  flex-direction: row-reverse;
+}
+#container[data-layout="top"] {
+  flex-direction: column-reverse;
+}
+#container[data-layout="bottom"] {
+  flex-direction: column;
+}
 #log {
   background-color: #F6F6F6;
-  float: left;
-  height: 100%;
-  width: calc(50% - 2px);
+  flex: 1 1 0;
+  min-height: 100px;
+  min-width: 100px;
 }
 #log-inner {
   font-family: "Lucida Console", monospace;
@@ -34,10 +49,12 @@ body {
   background-color: transparent;
   border: 0 none;
   cursor: ew-resize;
-  float: left;
-  height: 100%;
   padding: 0;
-  width: 4px;
+  flex: 0 0 4px;
+}
+#container[data-layout="top"] #drag-resize-bar,
+#container[data-layout="bottom"] #drag-resize-bar {
+  cursor: ns-resize;
 }
 div.log-item {
   border-bottom: 1px solid #DDDDDD;
@@ -71,10 +88,10 @@ div.log-item.input::before {
   color: #AA0000;
 }
 #console-wrapper {
-  float: right;
-  height: 100%;
   position: relative;
-  width: calc(50% - 2px);
+  flex: 1 1 0;
+  min-height: 100px;
+  min-width: 100px;
 }
 #textarea-wrapper {
   bottom: 28px;
@@ -121,26 +138,27 @@ div.log-item.input::before {
   </style>
 </head>
 <body>
-<div id="log">
-  <div id="log-inner">
-  </div>
-</div>
-<span id="drag-resize-bar" draggable="true"></span>
-<div id="console-wrapper">
-  <div id="textarea-wrapper">
-    <pre id="editor"></pre>
-  </div>
-  <div id="buttons">
-    <button id="run">Run</button>
-    <button id="clear">Clear</button>
-    <div id="snippets">
+  <div id="container" data-layout="right">
+    <div id="log">
+      <div id="log-inner">
+      </div>
+    </div>
+    <span id="drag-resize-bar" draggable="true"></span>
+    <div id="console-wrapper">
+      <div id="textarea-wrapper">
+        <pre id="editor"></pre>
+      </div>
+      <div id="buttons">
+        <button id="run">Run</button>
+        <button id="clear">Clear</button>
+        <div id="snippets">
+        </div>
+      </div>
     </div>
   </div>
-</div>
-<div style="clear: both;"></div>
-<script src="ace/src/ace.js" charset="utf-8"></script>
-<script src="prettyprint.min.js"></script>
-<script src="panel.js"></script>
-<script src="layout.js"></script>
+  <script src="ace/src/ace.js" charset="utf-8"></script>
+  <script src="prettyprint.min.js"></script>
+  <script src="panel.js"></script>
+  <script src="layout.js"></script>
 </body>
 </html>

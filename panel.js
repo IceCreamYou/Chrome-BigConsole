@@ -371,4 +371,13 @@ window.addEventListener('load', function() {
   });
 });
 
+chrome.storage.onChanged.addListener(function (items) {
+  document.getElementById('container').setAttribute("data-layout", items.layout.newValue);
+});
+chrome.storage.local.get({
+	layout: "right"
+}, function (items) {
+	document.getElementById('container').setAttribute("data-layout", items.layout);
+});
+
 }).call(this);
