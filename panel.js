@@ -309,8 +309,8 @@ function setupEditor() {
   editor.setWrapBehavioursEnabled(false);
   editor.setOptions({
     enableBasicAutocompletion: true,
-    enableSnippets: true,
-    enableLiveAutocompletion: true
+    enableSnippets: false,
+    enableLiveAutocompletion: false
   });
 
   var session = editor.getSession();
@@ -378,20 +378,36 @@ window.addEventListener('load', function() {
 
   chrome.storage.onChanged.addListener(function (items) {
   // addToConsole(JSON.stringify(items), "input");
-    if(items.layout){
+    if (items.layout){
       document.getElementById('container').setAttribute("data-layout", items.layout.newValue);
     }
-    if(items.theme) {
+    if (items.theme) {
       editor.setTheme(items.theme.newValue);
+    }
+    if (items.snippets) {
+      editor.setOptions({
+        enableSnippets: items.snippets.newValue
+      });
+    }
+    if (items.autocomplete) {
+      editor.setOptions({
+        enableLiveAutocompletion: items.autocomplete.newValue
+      });
     }
   });
 
   chrome.storage.local.get({
   	layout: "right",
-  	theme: "ace/theme/monokai"
+  	theme: "ace/theme/monokai",
+    snippets: false,
+    autocomplete: false,
   }, function (items) {
   	document.getElementById('container').setAttribute("data-layout", items.layout);
     editor.setTheme(items.theme);
+    editor.setOptions({
+      enableSnippets: items.snippets,
+      enableLiveAutocompletion: items.autocomplete
+    });
   });
 });
 
