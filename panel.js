@@ -376,6 +376,7 @@ window.addEventListener('load', function() {
     }
   });
 
+  // update on settings change
   chrome.storage.onChanged.addListener(function (items) {
   // addToConsole(JSON.stringify(items), "input");
     if (items.layout){
@@ -396,13 +397,14 @@ window.addEventListener('load', function() {
     }
   });
 
+  // get settings
   chrome.storage.local.get({
-  	layout: "right",
-  	theme: "ace/theme/monokai",
+    layout: "right",
+    theme: "ace/theme/monokai",
     snippets: false,
     autocomplete: false,
   }, function (items) {
-  	document.getElementById('container').setAttribute("data-layout", items.layout);
+    document.getElementById('container').setAttribute("data-layout", items.layout);
     editor.setTheme(items.theme);
     editor.setOptions({
       enableSnippets: items.snippets,
