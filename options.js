@@ -30,7 +30,7 @@ chrome.storage.local.get({
   layout: 'right',
   theme: 'ace/theme/monokai',
   snippets: false,
-  autocomplete: true
+  autocomplete: false
 }, function (items) {
   layout.value = items.layout;
   theme.value = items.theme;
