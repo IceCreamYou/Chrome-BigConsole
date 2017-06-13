@@ -294,6 +294,7 @@ function run(editor) {
  * Sets up the Ace Editor.
  */
 function setupEditor() {
+  var langTools = ace.require('ace/ext/language_tools');
   var editor = ace.edit('editor');
   editor.setTheme('ace/theme/monokai');
   editor.setBehavioursEnabled(true);
@@ -306,6 +307,11 @@ function setupEditor() {
   editor.setShowInvisibles(false);
   editor.setShowPrintMargin(true);
   editor.setWrapBehavioursEnabled(false);
+  editor.setOptions({
+    enableBasicAutocompletion: true,
+    enableSnippets: false,
+    enableLiveAutocompletion: false
+  });
 
   var session = editor.getSession();
   session.setMode('ace/mode/javascript');
@@ -368,6 +374,42 @@ window.addEventListener('load', function() {
     if (event.target.classList.contains('log-item')) {
       event.target.classList.toggle('removeWrap');
     }
+  });
+
+  // update on settings change
+  chrome.storage.onChanged.addListener(function (items) {
+  // addToConsole(JSON.stringify(items), "input");
+    if (items.layout){
+      document.getElementById('container').setAttribute('data-layout', items.layout.newValue);
+    }
+    if (items.theme) {
+      editor.setTheme(items.theme.newValue);
+    }
+    if (items.snippets) {
+      editor.setOptions({
+        enableSnippets: items.snippets.newValue
+      });
+    }
+    if (items.autocomplete) {
+      editor.setOptions({
+        enableLiveAutocompletion: items.autocomplete.newValue
+      });
+    }
+  });
+
+  // get settings
+  chrome.storage.local.get({
+    layout: 'right',
+    theme: 'ace/theme/monokai',
+    snippets: false,
+    autocomplete: false,
+  }, function (items) {
+    document.getElementById('container').setAttribute('data-layout', items.layout);
+    editor.setTheme(items.theme);
+    editor.setOptions({
+      enableSnippets: items.snippets,
+      enableLiveAutocompletion: items.autocomplete
+    });
   });
 });
 

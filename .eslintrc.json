@@ -1,0 +1,20 @@
+{
+	"env": {
+		"browser": true
+	},
+	"parserOptions": {
+		"ecmaFeatures": {
+			"impliedStrict": true
+		}
+	},
+	"rules": {
+		"no-tabs": 2,
+		"eqeqeq": 2,
+		"strict": 1,
+		"quotes": [1, "single"],
+		"max-len": 0
+	},
+	"globals": {
+		"chrome": true
+	}
+}
