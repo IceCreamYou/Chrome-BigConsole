@@ -1,4 +1,3 @@
-/* globals chrome */
 (function () {
 
 var layout = document.getElementById('layout');
