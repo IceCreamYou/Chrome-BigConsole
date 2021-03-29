@@ -1,5 +1,5 @@
 Adds a panel to the Chrome Developer Tools that provides a multi-line split
-console, like in Firebug.
+console, like Firefox's "multi-line editor mode."
 
 ![Screenshot](https://raw.github.com/IceCreamYou/Chrome-BigConsole/master/screenshot.png)
 
@@ -12,18 +12,18 @@ Includes:
 - "Clear" button to clear REPL
 - "History" drop-down to restore previously executed code
 
+**This extension is not actively maintained.** You may want to pursue a solution
+with a [custom theme](https://stackoverflow.com/a/16538221/843621) instead.
+
 ## Why?
 
 Chrome has a built-in multiline split console called
-[Snippets](https://developers.google.com/chrome-developer-tools/docs/authoring-development-workflow#snippets).
+[Snippets](https://developer.chrome.com/docs/devtools/javascript/sources/#snippets).
 However, I found that I could iterate and try out code faster in Firebug's
 console than I could in Snippets. I built BigConsole to be the Chrome
 equivalent of Firebug's BigConsole. Where Snippets is more like a light IDE,
 BigConsole is simpler and geared towards iterating on code as quickly as
 possible in a multiline, syntax-highlighted REPL.
-
-Using [FirebugLite](https://getfirebug.com/firebuglite) is a possible
-alternative, but it has a number of limitations.
 
 ## Known issues
 
@@ -36,6 +36,7 @@ alternative, but it has a number of limitations.
 - If a single run of the code in BigConsole creates console logs of multiple
   types, the output is not guaranteed to be in the same order in which the logs
   were created.
+- Modern JavaScript syntax is [not supported](https://github.com/IceCreamYou/Chrome-BigConsole/issues/16).
 
 ## Installation
 
@@ -60,13 +61,7 @@ go to `chrome://extensions` and click the "Reload (CTRL+R)" link under the
 extension. If you have the devtools open, you'll have to close and reopen it
 before the upgraded version will be loaded.
 
-## Credits
-
-[Isaac Sukin](http://www.isaacsukin.com/contact)
-([@IceCreamYou](https://twitter.com/IceCreamYou)) is the author of this
-project.
-
-Contributions are very much welcome!
+## License
 
 As described in the
 [license file](https://github.com/IceCreamYou/Chrome-BigConsole/blob/master/LICENSE.md),

@@ -3,10 +3,9 @@
 
   "name": "BigConsole",
   "description": "Adds a multiline JavaScript console to the Chrome developer tools.",
-  "version": "1.2.2",
+  "version": "1.2.3",
 
   "permissions": [
-    "tabs",
     "http://*/*",
     "https://*/*",
     "storage"
